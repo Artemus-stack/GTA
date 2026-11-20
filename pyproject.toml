@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gta-clipper"
+version = "0.1.0"
+description = "Three-agent pipeline: find viral GTA 6 stream moments from chat spikes, cut vertical clips with ClipsAI, post them through Postiz, learn what wins."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "yt-dlp>=2025.1.1",
+  "httpx>=0.27",
+  "PyYAML>=6",
+  "pydantic>=2.5",
+  "anthropic>=2.11",
+  "gspread>=6.0",
+  "google-auth>=2.20",
+]
+
+[project.optional-dependencies]
+# The editor agent needs these. They pull in torch, so they are kept optional
+# for machines that only run the scout or publisher.
+clip = ["clipsai==0.2.1", "whisperx>=3.7", "opencv-python"]
+dev = ["pytest>=8"]
+
+[project.scripts]
+clipper = "clipper.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["clipper*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,25 @@
+# Versions this pipeline was tested with (ClipsAI 0.2.1 is from January 2024 and
+# sensitive to its dependencies). Install with:
+#   pip install -c constraints.txt -e ".[clip]"
+anthropic==2.11.0
+clipsai==0.2.1
+ctranslate2==4.9.0
+faster-whisper==1.2.1
+google-auth==2.62.2
+gspread==6.2.1
+httpx==0.28.1
+nltk==3.10.4
+numpy==2.5.5
+opencv-python==5.1.0.95
+pyannote.audio==4.1.1
+pydantic==2.14.4
+python-magic==0.4.27
+PyYAML==6.0.3
+scenedetect==0.7.3
+sentence-transformers==5.7.0
+torch==2.8.0
+torchaudio==2.8.0
+torchvision==0.23.0
+transformers==4.57.6
+whisperx==3.8.6
+yt-dlp==2026.10.26

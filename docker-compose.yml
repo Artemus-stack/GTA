@@ -1,0 +1,36 @@
+# Each agent runs as its own service; they share the SQLite queue in ./data.
+#   cp config.example.yaml config.yaml && cp .env.example .env   (fill both in)
+#   mkdir -p secrets   (service-account.json and optional cookies.txt go here)
+#   docker compose up -d --build
+#
+# Postiz itself runs separately: Postiz Cloud, or Postiz's own docker-compose
+# (https://github.com/gitroomhq/postiz-app). If it runs on this same machine,
+# set POSTIZ_URL=http://host.docker.internal:4007/api in .env.
+
+x-clipper: &clipper
+  build: .
+  image: gta-clipper
+  env_file: .env
+  environment:
+    GOOGLE_APPLICATION_CREDENTIALS: /app/secrets/service-account.json
+  volumes:
+    - ./data:/app/data
+    - ./config.yaml:/app/config.yaml:ro
+    - ./secrets:/app/secrets:ro
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+  restart: unless-stopped
+
+services:
+  scout:         # agent 1: watches the top streams' chat
+    <<: *clipper
+    command: ["scout"]
+  editor:        # agent 2: yt-dlp -> ClipsAI -> captions + titles
+    <<: *clipper
+    command: ["edit"]
+  publisher:     # agent 3: Postiz, rotating accounts, logs to the sheet
+    <<: *clipper
+    command: ["publish"]
+  analyst:       # learning loop: metrics -> sheet -> what to repeat
+    <<: *clipper
+    command: ["analyze"]

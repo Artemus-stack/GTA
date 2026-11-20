@@ -1,0 +1,18 @@
+# secrets
+.env
+service-account*.json
+cookies*.txt
+
+# local state
+config.yaml
+data/
+
+# python
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+build/
+dist/
